@@ -31,6 +31,8 @@ jobs:
             build-mode: none
           - language: java-kotlin
             build-mode: manual
+          - language: c-cpp
+            build-mode: manual
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +40,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Java 21
-        if: matrix.language == 'java-kotlin'
+        if: matrix.language != 'actions'
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -46,7 +48,7 @@ jobs:
           cache: gradle
 
       - name: Setup Android SDK and NDK
-        if: matrix.language == 'java-kotlin'
+        if: matrix.language != 'actions'
         run: |
           set -e
           SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
@@ -67,7 +69,7 @@ jobs:
           build-mode: ${{ matrix.build-mode }}
 
       - name: Build debug APKs
-        if: matrix.language == 'java-kotlin'
+        if: matrix.language != 'actions'
         run: |
           chmod +x ./gradlew
           ./gradlew :app:assembleDebug --parallel --stacktrace
