@@ -1,0 +1,78 @@
+name: CodeQL
+
+# 说明：这里用「高级配置」而不是仓库设置里的 default setup。
+# 原因：:xposed 模块要用 NDK 27 编译 libportal.so，CodeQL 的自动构建环境里没有 NDK，
+# 会在配置阶段失败并报 "configuration error"。所以改成手动指定构建步骤。
+
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: '0 3 * * 1'
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze ${{ matrix.language }}
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+            build-mode: none
+          - language: java-kotlin
+            build-mode: manual
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java 21
+        if: matrix.language == 'java-kotlin'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Setup Android SDK and NDK
+        if: matrix.language == 'java-kotlin'
+        run: |
+          set -e
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK" >> "$GITHUB_ENV"
+          echo "sdk.dir=$SDK" > local.properties
+          SDKMGR="$(ls -d "$SDK"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | head -n1)"
+          echo "sdkmanager: $SDKMGR"
+          yes | "$SDKMGR" --licenses > /dev/null 2>&1 || true
+          "$SDKMGR" "ndk;27.0.12077973" > /dev/null
+          echo "ANDROID_NDK_HOME=$SDK/ndk/27.0.12077973" >> "$GITHUB_ENV"
+          ls "$SDK/ndk"
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Build debug APKs
+        if: matrix.language == 'java-kotlin'
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:assembleDebug --parallel --stacktrace
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
