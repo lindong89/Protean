@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 声明本 App 支持的语言：默认资源是中文，另有 values-en / values-ja。
+     有了这个文件，系统设置里可以给本 App 单独选语言（Android 13+）。 -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="zh" />
+    <locale android:name="en" />
+    <locale android:name="ja" />
+</locale-config>

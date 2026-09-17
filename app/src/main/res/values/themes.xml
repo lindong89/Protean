@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/portal_appbar_color</item>
+        <item name="colorPrimaryVariant">@color/portal_appbar_color_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/portal_appbar_color</item>
         <item name="colorSecondaryVariant">@color/portal_appbar_color_center</item>
 

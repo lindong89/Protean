@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Portal</string>
+  <string name="app_name">Protean</string>
   <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
   <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
-  <string name="nav_header_title">Portal</string>
+  <string name="nav_header_title">Protean</string>
   <string name="nav_header_subtitle">学習とコミュニケーションのみのため、3 時間以内に削除してください</string>
   <string name="nav_header_desc">ナビゲーションヘッダー</string>
   <string name="action_settings">設定</string>
@@ -35,6 +35,8 @@
   <string name="default_latlon">0.00, 0.00</string>
   <string name="start_mock">シュミレーションを開始</string>
   <string name="rocker">ジョイスティックで移動</string>
+  <string name="map_source">地図ソース</string>
+  <string name="map_source_desc">ベースマップのタイルソース。地図に戻ると反映されます</string>
   <string name="history_location">位置情報の履歴</string>
   <string name="history_route">ルートの履歴</string>
   <string name="goto_location">位置情報にジャンプ</string>
@@ -63,6 +65,11 @@
   <string name="cdma_desc">ネットワークを CDMA にダウングレードします</string>
   <string name="hook_sensor">センサーハイジャッキング</string>
   <string name="hook_sensor_desc">シュミレートされたリズム (改善予定)</string>
+  <string name="wifi_mock">Wi-Fi スキャン結果を遮断</string>
+  <string name="loop_broadcast">位置の引き戻し防止</string>
+  <string name="loop_broadcast_desc">実際の位置に戻されるのを防ぎます（発熱の可能性）</string>
+  <string name="agps_module">AGPS モジュールを有効化（一部端末では必要）</string>
+  <string name="wifi_mock_desc">Wi-Fi 測位で実際の位置に戻されるのを防ぎます（推奨）</string>
   <string name="show_route">ルートを表示</string>
   <string name="item_report_duration_title">位置報告の間隔</string>
   <string name="item_report_duration_desc">位置を報告する頻度 (ミリ秒単位)</string>

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#D81B60</color>
+    <!-- 主题色板：蓝色体系（原来是 #5F5F5F / #494949 / #373737 的灰黑体系）
+         整体比上一版浅一档：主色由 #1565C0 提到 #1E88E5，深色仅保留给正文文字保证可读性 -->
+    <color name="blue900">#1565C0</color>
+    <color name="blue800">#1E88E5</color>
+    <color name="blue700">#2196F3</color>
+    <color name="blue600">#42A5F5</color>
+    <color name="blue200">#BBDEFB</color>
+    <color name="blue100">#E3F2FD</color>
+    <color name="blueGrey800">#37474F</color>
+    <color name="blueGrey300">#90A4AE</color>
+
+    <color name="colorAccent">@color/blue800</color>
 
     <color name="primary">#FFFFFFFF</color>
     <color name="primary_dark">#FFFFFFFF</color>
-    <color name="accent">#696969</color>
-    <color name="accentFallback">#757575</color>
-    <color name="icon_grey">#757575</color>
+    <color name="accent">@color/blue800</color>
+    <color name="accentFallback">@color/blue600</color>
+    <color name="icon_grey">@color/blueGrey300</color>
 
     <color name="red500">#F44336</color>
     <color name="green500">#4CAF50</color>
@@ -18,33 +29,34 @@
 
     <!-- Flashing colors -->
     <color name="flashing_background_color">@android:color/black</color>
-    <color name="ic_launcher_background">#00B0FF</color>
+    <color name="ic_launcher_background">@color/blue800</color>
 
-    <color name="theme_appbar_color">#5F5F5F</color>
+    <color name="theme_appbar_color">@color/blue800</color>
     <color name="theme_side_nav_text_color">#FFFFFF</color>
-    <color name="theme_side_nav_start_color">#373737</color>
-    <color name="theme_side_nav_center_color">#494949</color>
-    <color name="theme_side_nav_end_color">#373737</color>
+    <color name="theme_side_nav_start_color">@color/blue900</color>
+    <color name="theme_side_nav_center_color">@color/blue800</color>
+    <color name="theme_side_nav_end_color">@color/blue900</color>
     <color name="theme_appbar_text_color">#FFFFFF</color>
     <color name="theme_appbar_icon_color">#FFFFFF</color>
-    <color name="theme_nav_icon_color">#0D0D0D</color>
-    <color name="theme_active">#5F5F5F</color>
-    <color name="theme_focused_touch">#A0A0A0</color>
+    <color name="theme_nav_icon_color">@color/blue900</color>
+    <color name="theme_active">@color/blue800</color>
+    <color name="theme_focused_touch">@color/blue200</color>
 
-    <color name="portal_appbar_color">#5F5F5F</color>
-    <color name="portal_appbar_color_center">#494949</color>
-    <color name="portal_appbar_color_dark">#373737</color>
-    <color name="portal_mini_title_color">#5F5F5F</color>
-    <color name="portal_hint_color">#5F5F5F</color>
-    <color name="portal_text_color">#373737</color>
-    <color name="portal_nav_icon">#373737</color>
-    <color name="portal_mock_off">#373737</color>
-    <color name="portal_mock_on">#040404</color>
+    <color name="portal_appbar_color">@color/blue800</color>
+    <color name="portal_appbar_color_center">@color/blue600</color>
+    <color name="portal_appbar_color_dark">@color/blue900</color>
+    <color name="portal_mini_title_color">@color/blue800</color>
+    <color name="portal_hint_color">@color/blue700</color>
+    <color name="portal_text_color">@color/blue900</color>
+    <color name="portal_nav_icon">@color/blue800</color>
+    <!-- "未开启"状态保持中性深蓝灰，和"已开启"的蓝色区分开 -->
+    <color name="portal_mock_off">@color/blueGrey800</color>
+    <color name="portal_mock_on">@color/blue900</color>
 
-    <color name="portal_location_detail_background">#bb5F5F5F</color>
+    <color name="portal_location_detail_background">#bb1565C0</color>
     <color name="portal_location_detail_block">#aaFFFFFF</color>
 
-    <color name="selected_color">#BCBCBC</color>
+    <color name="selected_color">@color/blue100</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -53,6 +65,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#8E24AA</color>
+    <color name="colorPrimary">@color/blue800</color>
+    <color name="colorPrimaryDark">@color/blue900</color>
 </resources>
