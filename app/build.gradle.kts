@@ -30,12 +30,6 @@ android {
 //            throw GradleException("在 CI 环境中必须提供 google-services.json 文件!")
 //        }
 
-        manifestPlaceholders["BUGLY_APPID"] = "222f9ef298"
-
-        // ⚠️ 不要把构建机器的公网 IP / 主机名 / 本地路径写进 manifestPlaceholder：
-        // 这些值会直接进入发布出去的 APK，任何人解包即可读到。这里只放与代码有关的信息。
-        manifestPlaceholders["BUGLY_BUILD_ENV"] = "GIT:${getGitCommitHash()}"
-        manifestPlaceholders["APP_CHANNEL"] = "Protean"
     }
 
     buildTypes {
@@ -45,13 +39,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            manifestPlaceholders["APP_VERSION"] = defaultConfig.versionName ?: "UnknownVersion"
-            manifestPlaceholders["BUGLY_ENABLE_DEBUG"] = "false"
         }
 
         debug {
-            manifestPlaceholders["APP_VERSION"] = "${defaultConfig.versionName}-debug"
-            manifestPlaceholders["BUGLY_ENABLE_DEBUG"] = "true"
         }
     }
 
@@ -180,7 +170,6 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlin.reflect)
 
-    implementation(libs.bugly)
 
     implementation(libs.geotools)
     implementation(libs.osmdroid.android)

@@ -19,14 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.baidu.** {*;}
--keep class vi.com.** {*;}
--keep class com.baidu.vi.** {*;}
--dontwarn com.baidu.**
 
 -keepclassmembers class com.dd.StrokeGradientDrawable {
     public void setStrokeColor(int);
 }
-
--dontwarn com.tencent.bugly.**
--keep public class com.tencent.bugly.**{*;}

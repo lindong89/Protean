@@ -1,8 +1,6 @@
 package com.ld.protean
 
 import android.app.Application
-import com.tencent.bugly.crashreport.CrashReport
-import com.ld.protean.android.Bugly
 import org.osmdroid.config.Configuration
 
 class Protean : Application() {
@@ -16,14 +14,5 @@ class Protean : Application() {
             userAgentValue = packageName
             tileFileSystemCacheMaxBytes = 100L * 1024 * 1024
         }
-
-        CrashReport.initCrashReport(applicationContext)
-
-        CrashReport.setUserId(applicationContext, Bugly.getUniqueDeviceId(applicationContext))
-        CrashReport.setDeviceId(applicationContext, Bugly.getUniqueDeviceId(applicationContext))
-        CrashReport.setDeviceModel(applicationContext, Bugly.getDeviceModel())
-        CrashReport.setCollectPrivacyInfo(applicationContext, true)
-
-        //CrashReport.setAllThreadStackEnable(applicationContext, true, true)
     }
 }

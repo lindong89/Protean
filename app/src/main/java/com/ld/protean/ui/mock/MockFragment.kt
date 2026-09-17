@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -162,7 +161,6 @@ class MockFragment : Fragment() {
 
                 if (mockServiceViewModel.locationManager == null) {
                     Toast.makeText(requireContext(), "定位服务加载异常", Toast.LENGTH_SHORT).show()
-                    CrashReport.postCatchedException(RuntimeException("运行时mockServiceViewModel.locationManager为空！"))
                     return@HistoricalLocationAdapter
                 }
 
