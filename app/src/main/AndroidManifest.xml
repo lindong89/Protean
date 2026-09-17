@@ -35,12 +35,13 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
-        android:name=".Portal"
+        android:name=".Protean"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -55,17 +56,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- 百度地图定位服务 -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:foregroundServiceType="location"
-            android:process=":remote"
-            tools:ignore="ForegroundServicePermission" />
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="UzCD3gLYg3M9Ue2749hm1jsHX2DyfMUF" />
 
         <!-- Xposed 模块配置 -->
         <meta-data

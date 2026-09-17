@@ -61,7 +61,9 @@ location.extras?.putBoolean("is_mock", true)
 # Thanks
 
 - [GoGoGo](https://github.com/ZCShou/GoGoGo)
-- [Baidu Map SDK](https://lbsyun.baidu.com/faq/api?title=androidsdk)
+- [osmdroid](https://github.com/osmdroid/osmdroid)（本仓库用其替换了百度地图 SDK）
+- [Photon](https://photon.komoot.io/)（关键字搜索与逆地理编码，需联网）
+- [Esri ArcGIS 在线底图](https://server.arcgisonline.com/arcgis/rest/services)（无需 API Key）
 
 
 ## License

@@ -53,6 +53,43 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/map_source_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/map_source_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_source"
+                    android:textColor="@color/portal_mini_title_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/map_source_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/map_source_desc"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/map_source_title"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/map_source_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    app:layout_constraintTop_toBottomOf="@id/map_source_title"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/altitude_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -457,16 +494,49 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="禁用扫描WIFI列表"
+                        android:text="@string/wifi_mock"
                         android:textColor="@color/portal_mini_title_color" />
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="一定程度解决位置拉回（测试）"
+                        android:text="@string/wifi_mock_desc"
                         android:textSize="11sp" />
                 </LinearLayout>
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/disable_wlan_scan_switch"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:useMaterialThemeColors="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loop_broadcast_location_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loop_broadcast"
+                        android:textColor="@color/portal_mini_title_color" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loop_broadcast_desc"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/loop_broadcast_switch"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"

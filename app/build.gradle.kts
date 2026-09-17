@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "moe.fuqiuluo.portal"
+    namespace = "com.ld.protean"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "moe.fuqiuluo.portal"
+        applicationId = "com.ld.protean"
         minSdk = 26
         targetSdk = 35
         versionCode = getVersionCode()
@@ -98,7 +98,7 @@ android {
                     "x64" -> "x86_64"
                     else -> abi
                 }
-                it.outputFileName = "Portal-v${versionName}-${abiName}.apk"
+                it.outputFileName = "Protean-v${versionName}-${abiName}.apk"
             }
     }
 
@@ -144,11 +144,6 @@ android {
             useLegacyPackaging = true
             excludes += "lib/armeabi/**"
             excludes += "lib/x86/**"
-            excludes += "lib/x86_64/libBaiduMapSDK**"
-            excludes += "lib/x86_64/libc++_shared.so"
-            excludes += "lib/x86_64/libc++_shared.so"
-            excludes += "lib/x86_64/liblocSDK8b.so"
-            excludes += "lib/x86_64/libtiny_magic.so"
         }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -173,10 +168,6 @@ android {
             excludes += "lib/x86/**"
         }
     }
-    sourceSets {
-        getByName("main").jniLibs.srcDirs("libs")
-    }
-
     configureAppSigningConfigsForRelease(project)
 }
 
@@ -227,10 +218,7 @@ dependencies {
     implementation(libs.bugly)
 
     implementation(libs.geotools)
-    implementation(fileTree(mapOf(
-        "dir" to "libs",
-        "include" to listOf("*.jar")
-    )))
+    implementation(libs.osmdroid.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

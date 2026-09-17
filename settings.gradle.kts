@@ -37,7 +37,7 @@ buildscript {
     dependencies {}
 }
 
-rootProject.name = "Portal"
+rootProject.name = "Protean"
 include(":app")
 include(":xposed")
 include(":system-api")

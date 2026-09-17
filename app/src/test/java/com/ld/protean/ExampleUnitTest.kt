@@ -1,4 +1,4 @@
-package moe.fuqiuluo.portal
+package com.ld.protean
 
 import org.junit.Test
 

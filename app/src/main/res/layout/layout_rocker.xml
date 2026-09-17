@@ -8,11 +8,11 @@
     android:padding="4dp"
     android:orientation="vertical">
 
-    <moe.fuqiuluo.portal.android.widget.RockerView
+    <com.ld.protean.android.widget.RockerView
         android:id="@+id/rocker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:areaBackground="#E6494949"
+        app:areaBackground="#E61E88E5"
         app:rockerBackground="#FFFFFF" />
 
     <androidx.cardview.widget.CardView
@@ -64,7 +64,7 @@
                     android:importantForAccessibility="no"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/baseline_robot_24"
-                    app:tint="#373737"
+                    app:tint="@color/blue800"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
                     android:importantForAccessibility="no"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/baseline_control_camera_24"
-                    app:tint="#373737"
+                    app:tint="@color/blue800"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,7 +137,7 @@
                     android:importantForAccessibility="no"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/baseline_settings_24"
-                    app:tint="#373737"
+                    app:tint="@color/blue800"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

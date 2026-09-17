@@ -44,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp">
 
-                        <moe.fuqiuluo.portal.android.widget.SatelliteRadarView
+                        <com.ld.protean.android.widget.SatelliteRadarView
                             android:id="@+id/satellite_rada_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -432,7 +432,7 @@
                             android:id="@+id/switch_enable_agps"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="启用AGPS模块"
+                            android:text="@string/agps_module"
                             android:checked="false"
                             android:padding="8dp"/>
 
