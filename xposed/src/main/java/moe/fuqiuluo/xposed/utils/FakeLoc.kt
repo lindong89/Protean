@@ -33,10 +33,12 @@ object FakeLoc {
     var enableMockGnss = false
 
     /**
-     * 模拟WLAN数据
+     * 模拟WLAN数据（默认开启）
+     * 必须开启：高版本 Android 上应用可以通过 WiFi 扫描结果 + AGPS 反查真实位置，
+     * 现象就是"模拟位置生效几秒后被拉回真实位置"。开启后扫描结果返回空列表。
      */
     @Volatile
-    var enableMockWifi = false
+    var enableMockWifi = true
 
     /**
      * 是否禁用GetCurrentLocation方法（在部分系统不禁用可能导致hook失效）
@@ -76,6 +78,17 @@ object FakeLoc {
      * may cause system to crash
      */
     var hookWifi = true
+
+    /**
+     * 反定位拉回：按固定间隔把所有已注册监听器上的模拟位置重播一遍，
+     * 把被 App 用自家定位/网络定位拉回的真实位置再压回去（耗电，默认关闭）
+     */
+    var loopBroadcastLocation = false
+
+    /**
+     * 反定位拉回的重播间隔（毫秒）
+     */
+    var loopBroadcastInterval = 300L
 
     /**
      * 将网络定位降级为Cdma

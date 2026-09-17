@@ -2,7 +2,9 @@ package moe.fuqiuluo.xposed
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.Parcel
 import moe.fuqiuluo.dobby.Dobby
 import moe.fuqiuluo.xposed.hooks.LocationServiceHook
@@ -15,8 +17,28 @@ import kotlin.random.Random
 object RemoteCommandHandler {
     private val proxyBinders by lazy { Collections.synchronizedList(arrayListOf<IBinder>()) }
     private val needProxyCmd = arrayOf("start", "stop", "set_speed_amp", "set_altitude", "set_speed", "update_location", "set_bearing", "move", "put_config")
-    internal val randomKey by lazy { "portal_" + Random.nextDouble() }
+    internal val randomKey by lazy { "protean_" + Random.nextDouble() }
     private var isLoadedLibrary = false
+
+    // 反定位拉回：把模拟位置持续重播给所有监听器，压回被 App 拉走的真实位置
+    private val loopHandler by lazy { Handler(Looper.getMainLooper()) }
+    private val loopRunnable = object : Runnable {
+        override fun run() {
+            if (!FakeLoc.enable || !FakeLoc.loopBroadcastLocation) return
+            kotlin.runCatching { LocationServiceHook.callOnLocationChanged() }
+            loopHandler.postDelayed(this, FakeLoc.loopBroadcastInterval)
+        }
+    }
+
+    /**
+     * 依据当前开关状态启停重播循环（模拟未开启时自动不工作）
+     */
+    fun updateLoopBroadcast() {
+        loopHandler.removeCallbacks(loopRunnable)
+        if (FakeLoc.enable && FakeLoc.loopBroadcastLocation) {
+            loopHandler.post(loopRunnable)
+        }
+    }
 
     @SuppressLint("UnsafeDynamicallyLoadedCode")
     fun handleInstruction(command: String, rely: Bundle): Boolean {
@@ -75,11 +97,13 @@ object RemoteCommandHandler {
                 FakeLoc.altitude = altitude
                 FakeLoc.accuracy = accuracy
 
+                updateLoopBroadcast()
                 return true
             }
             "stop" -> {
                 FakeLoc.enable = false
                 FakeLoc.hasBearings = false
+                updateLoopBroadcast()
                 if (isLoadedLibrary) {
                     Dobby.setStatus(false)
                 }
@@ -87,6 +111,11 @@ object RemoteCommandHandler {
             }
             "is_start" -> {
                 rely.putBoolean("is_start", FakeLoc.enable)
+                return true
+            }
+            "set_loop_broadcast_location" -> {
+                FakeLoc.loopBroadcastLocation = rely.getBoolean("loop_broadcast_location", true)
+                updateLoopBroadcast()
                 return true
             }
             "start_gnss_mock" -> {
@@ -225,6 +254,7 @@ object RemoteCommandHandler {
                 }
 
                 val enableAGPS = rely.getBoolean("enable_agps", FakeLoc.enableAGPS)
+                val enableMockWifi = rely.getBoolean("enable_mock_wifi", FakeLoc.enableMockWifi)
                 val enableNMEA = rely.getBoolean("enable_nmea", FakeLoc.enableNMEA)
                 val disableRequestGeofence = rely.getBoolean("disable_request_geofence", FakeLoc.disableRequestGeofence)
                 val disableGetFromLocation = rely.getBoolean("disable_get_from_location", FakeLoc.disableGetFromLocation)
@@ -240,6 +270,7 @@ object RemoteCommandHandler {
                 FakeLoc.needDowngradeToCdma = needDowngradeToCdma
                 FakeLoc.minSatellites = minSatellites
                 FakeLoc.enableAGPS = enableAGPS
+                FakeLoc.enableMockWifi = enableMockWifi
                 FakeLoc.enableNMEA = enableNMEA
                 FakeLoc.disableRequestGeofence = disableRequestGeofence
                 FakeLoc.disableGetFromLocation = disableGetFromLocation
@@ -265,6 +296,7 @@ object RemoteCommandHandler {
                 rely.putBoolean("hide_mock", FakeLoc.hideMock)
                 rely.putBoolean("hook_wifi", FakeLoc.hookWifi)
                 rely.putBoolean("need_downgrade_to_2g", FakeLoc.needDowngradeToCdma)
+                rely.putBoolean("loop_broadcast_location", FakeLoc.loopBroadcastLocation)
                 return true
             }
             "broadcast_location" -> {
