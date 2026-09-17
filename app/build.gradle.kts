@@ -32,45 +32,10 @@ android {
 
         manifestPlaceholders["BUGLY_APPID"] = "222f9ef298"
 
-        val publicIp = try {
-            val isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows
-            val process = if (isWindows) {
-                Runtime.getRuntime().exec(arrayOf(
-                    "powershell.exe",
-                    "-command",
-                    "(Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).Content," +
-                            "(Invoke-WebRequest -Uri 'https://ifconfig.me' -UseBasicParsing).Content," +
-                            "(Invoke-WebRequest -Uri 'https://icanhazip.com' -UseBasicParsing).Content," +
-                            "(Invoke-WebRequest -Uri 'https://checkip.amazonaws.com' -UseBasicParsing).Content" +
-                            " | Select-Object -First 1"
-                ))
-            } else {
-                Runtime.getRuntime().exec(arrayOf("sh", "-c",
-                    "curl -s https://api.ipify.org || " +
-                            "curl -s https://ifconfig.me || " +
-                            "curl -s https://icanhazip.com || " +
-                            "curl -s https://checkip.amazonaws.com"
-                ))
-            }
-            val reader = process.inputStream.bufferedReader()
-            val ip = reader.readLine()?.trim() ?: "unknown"
-            if (ip.matches("\\d+\\.\\d+\\.\\d+\\.\\d+".toRegex())) ip else "unknown"
-        } catch (e: Exception) {
-            println("Error getting public IP address: ${e.message}")
-            "unknown"
-        }
-
-        val deviceName = try {
-            val process = Runtime.getRuntime().exec("hostname")
-            val reader = process.inputStream.bufferedReader()
-            reader.readLine()?.trim() ?: "unknown"
-        } catch (e: Exception) {
-            println("Error getting device name: ${e.message}")
-            "unknown"
-        }
-        val buildPath = project.rootDir.absolutePath.replace("\\", "/")
-        manifestPlaceholders["BUGLY_BUILD_ENV"] = "IP:$publicIp,DEVICE:$deviceName,PATH:$buildPath"
-        manifestPlaceholders["APP_CHANNEL"] = "$publicIp-$deviceName"
+        // ⚠️ 不要把构建机器的公网 IP / 主机名 / 本地路径写进 manifestPlaceholder：
+        // 这些值会直接进入发布出去的 APK，任何人解包即可读到。这里只放与代码有关的信息。
+        manifestPlaceholders["BUGLY_BUILD_ENV"] = "GIT:${getGitCommitHash()}"
+        manifestPlaceholders["APP_CHANNEL"] = "Protean"
     }
 
     buildTypes {
