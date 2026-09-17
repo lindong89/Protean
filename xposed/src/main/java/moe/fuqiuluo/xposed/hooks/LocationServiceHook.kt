@@ -414,7 +414,7 @@ internal object LocationServiceHook: BaseLocationHook() {
         })
 
         cILocationManager.hookAllMethods("addTestProvider", beforeHook {
-            if (FakeLoc.enable && !FakeLoc.enableAGPS) {
+            if (FakeLoc.enable) {
                 if(FakeLoc.enableDebugLog) {
                     Logger.debug("addTestProvider: injected!")
                 }
@@ -423,7 +423,7 @@ internal object LocationServiceHook: BaseLocationHook() {
         })
 
         cILocationManager.hookAllMethods("removeTestProvider", beforeHook {
-            if (FakeLoc.enable && !FakeLoc.enableAGPS) {
+            if (FakeLoc.enable) {
                 if(FakeLoc.enableDebugLog) {
                     Logger.debug("removeTestProvider: injected!")
                 }
@@ -432,7 +432,7 @@ internal object LocationServiceHook: BaseLocationHook() {
         })
 
         cILocationManager.hookAllMethods("setTestProviderLocation", beforeHook {
-            if (FakeLoc.enable && !FakeLoc.enableAGPS) {
+            if (FakeLoc.enable) {
                 if(FakeLoc.enableDebugLog) {
                     Logger.debug("setTestProviderLocation: injected!")
                 }
@@ -441,7 +441,7 @@ internal object LocationServiceHook: BaseLocationHook() {
         })
 
         cILocationManager.hookAllMethods("setTestProviderEnabled", beforeHook {
-            if (FakeLoc.enable && !FakeLoc.enableAGPS) {
+            if (FakeLoc.enable) {
                 if(FakeLoc.enableDebugLog) {
                     Logger.debug("setTestProviderEnabled: injected!")
                 }
@@ -463,7 +463,7 @@ internal object LocationServiceHook: BaseLocationHook() {
                         return
                     }
 
-                    if (cIGnssStatusListener.onceHookAllMethod("onSvStatusChanged", beforeHook {
+                    val hookSvStatus = beforeHook {
                         // android 7.0.0
                         // void onSvStatusChanged(int svCount, in int[] svidWithFlags, in float[] cn0s,
                         //            in float[] elevations, in float[] azimuths);
@@ -579,8 +579,26 @@ internal object LocationServiceHook: BaseLocationHook() {
                         }
 
                         Logger.error("onSvStatusChanged: unsupported version: $method")
-                    }).isEmpty()) {
-                        Logger.error("find onSvStatusChanged failed!")
+                    }
+                    // 这个回调的方法名随 Android 版本变化（onSvStatusChanged / onGnssSvStatusChanged / ...），
+                    // 所以先扫描回调类的全部方法，凡参数里出现 GnssStatus 的都挂上；
+                    // 老版本是 (int, int[], float[], ...) 形式，没有 GnssStatus，再用方法名兜底。
+                    val svMethods = cIGnssStatusListener.declaredMethods.filter { m ->
+                        m.parameterTypes.any { it.name == "android.location.GnssStatus" }
+                    }
+                    svMethods.forEach { XposedBridge.hookMethod(it, hookSvStatus) }
+
+                    val nameHooked = cIGnssStatusListener.onceHookAllMethod("onSvStatusChanged", hookSvStatus)
+                        .plus(cIGnssStatusListener.onceHookAllMethod("onGnssSvStatusChanged", hookSvStatus))
+
+                    if (svMethods.isEmpty() && nameHooked.isEmpty()) {
+                        // 把真实类名和方法签名打出来，避免下次再靠猜方法名
+                        val desc = cIGnssStatusListener.declaredMethods.joinToString("; ") { m ->
+                            m.name + "(" + m.parameterTypes.joinToString(",") { it.name } + ")"
+                        }
+                        Logger.error("find onSvStatusChanged failed! class=${cIGnssStatusListener.name} methods=[$desc]")
+                    } else if (FakeLoc.enableDebugLog) {
+                        Logger.debug("gnss status hooked: class=${cIGnssStatusListener.name} byType=${svMethods.size} byName=${nameHooked.size}")
                     }
 
                     cIGnssStatusListener.onceHookAllMethod("onNmeaReceived", beforeHook {
@@ -740,7 +758,7 @@ internal object LocationServiceHook: BaseLocationHook() {
             }
 
             // Not the provider of the portal, does not process
-            if (provider != "portal") {
+            if (provider != "protean") {
                 if (FakeLoc.enableDebugLog)
                     Logger.debug("sendExtraCommand provider: $provider, command: $command, result: $result")
                 return@beforeHook
@@ -762,7 +780,7 @@ internal object LocationServiceHook: BaseLocationHook() {
                         if (param == null || param.args.size < 2 || param.args[0] == null) return
                         val provider = param.args[0] as String
                         var userId = param.args[1] as Int
-                        if (provider == "portal") {
+                        if (provider == "protean") {
                             if (userId == 0) {
                                 userId = BinderUtils.getCallerUid()
                             }
@@ -789,7 +807,7 @@ internal object LocationServiceHook: BaseLocationHook() {
                         if (param == null || param.args.isEmpty() || param.args[0] == null) return
                         val provider = param.args[0] as String
                         val userId = BinderUtils.getCallerUid()
-                        if (provider == "portal" && BinderUtils.isLocationProviderEnabled(userId)) {
+                        if (provider == "protean" && BinderUtils.isLocationProviderEnabled(userId)) {
                             param.result = true
                         } else if(provider == "network") {
                             param.result = !FakeLoc.enable

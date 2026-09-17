@@ -41,7 +41,7 @@ abstract class BaseDivineService {
             return false
         }
 
-        if (!locationManager.isProviderEnabled("portal")) {
+        if (!locationManager.isProviderEnabled("protean")) {
             if (retryCount > 10) {
                 return false
             }
@@ -51,7 +51,7 @@ abstract class BaseDivineService {
 
         var randomKey = ""
         val rely = Bundle()
-        if(locationManager.sendExtraCommand("portal", "exchange_key", rely)) {
+        if(locationManager.sendExtraCommand("protean", "exchange_key", rely)) {
             rely.getString("key")?.let {
                 randomKey = it
             }
@@ -66,7 +66,7 @@ abstract class BaseDivineService {
 
         rely.putBinder("proxy", object: Binder() {
             override fun getInterfaceDescriptor(): String {
-                return "moe.fuqiuluo.portal.service.${from}Helper"
+                return "com.ld.protean.service.${from}Helper"
             }
 
             override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
@@ -84,7 +84,7 @@ abstract class BaseDivineService {
             }
         })
         rely.putString("command_id", "set_proxy")
-        if (!locationManager.sendExtraCommand("portal", randomKey, rely)) {
+        if (!locationManager.sendExtraCommand("protean", randomKey, rely)) {
             Logger.error("Failed to init service proxy in $from")
             return false
         }
@@ -97,7 +97,7 @@ abstract class BaseDivineService {
     private fun syncConfig(locationManager: LocationManager, randomKey: String) {
         val rely = Bundle()
         rely.putString("command_id", "sync_config")
-        if(locationManager.sendExtraCommand("portal", randomKey, rely)) {
+        if(locationManager.sendExtraCommand("protean", randomKey, rely)) {
             FakeLoc.enable = rely.getBoolean("enable", FakeLoc.enable)
             FakeLoc.latitude = rely.getDouble("latitude", FakeLoc.latitude)
             FakeLoc.longitude = rely.getDouble("longitude", FakeLoc.longitude)
